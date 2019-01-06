@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Orb Vallis Cycle</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <p>
+            <span class="minutes">0 minutes</span> <span class="seconds">0
+                seconds</span> until <b><span class="next-weather">cold</span>
+                weather</b>.
+        </p>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"></script>
+        <script>
+         (function(){var d=function(b,a){switch(b){case 1:return b+" "+a;default:return b+" "+a+"s"}},c=function(b,a,c){b=b.firstChild;if(c)switch(c){case "minutes":b.nodeValue=d(a.minutes(),"minute");break;case "seconds":b.nodeValue=d(a.seconds(),"second");break;default:b.nodeValue=a}else b.nodeValue=a},f=document.querySelector("span.minutes"),g=document.querySelector("span.seconds"),h=document.querySelector("span.next-weather"),k=moment.utc("2018-11-10T08:14:00"),e=function(){var b=moment(),a=moment.duration(b.diff(k,
+"seconds"))%1600;b=400>a?"cold":"warm";a:switch(b){case "cold":a=moment.duration(400-a,"seconds");break a;case "warm":a=moment.duration(1600-a,"seconds");break a;default:a=null}c(f,a,"minutes");c(g,a,"seconds");c(h,b)};e();setInterval(e,1E3)})();
+        </script>
+    </body>
+</html>
