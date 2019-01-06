@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Orb Vallis Cycle</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <p>
+            <span class="minutes">0 minutes</span> <span class="seconds">0
+                seconds</span> until <b><span class="next-weather">cold</span>
+                weather</b>.
+        </p>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"></script>
+        <script>
+         (function(){
+             var FULL_CYCLE = 1600;
+             var WARM_CYCLE = 400;
+
+             //////////////////////////////////////////////////////////////
+             // Utility functions.
+             //////////////////////////////////////////////////////////////
+             var chooseWord = function(number, unit) {
+                 switch (number) {
+                     case 1: return number + ' ' + unit;
+                     default: return number + ' ' + unit + 's';
+                 }
+             };
+
+             var setText = function(element, arg, unit) {
+                 var textNode = element.firstChild;
+
+                 if (unit) {
+                     switch (unit) {
+                         case 'minutes':
+                             textNode.nodeValue =
+                                 chooseWord(arg.minutes(), 'minute');
+                             break;
+                         case 'seconds':
+                             textNode.nodeValue =
+                                 chooseWord(arg.seconds(), 'second');
+                             break;
+                         default:
+                             textNode.nodeValue = arg;
+                             break;
+                     }
+                 } else {
+                     textNode.nodeValue = arg;
+                 }
+             };
+
+             var findNextWeather = function(pointInCycle) {
+                 if (pointInCycle < WARM_CYCLE) {
+                     return 'cold';
+                 }
+                 return 'warm';
+             };
+
+             var calculateTimeLeft = function(pointInCycle, nextWeather) {
+                 switch (nextWeather) {
+                     case 'cold':
+                         return moment
+                             .duration(WARM_CYCLE - pointInCycle, 'seconds');
+                     case 'warm':
+                         return moment
+                             .duration(FULL_CYCLE - pointInCycle, 'seconds');
+                     default: return null;
+                 }
+             };
+             //////////////////////////////////////////////////////////////
+             // End of utility functions.
+             //////////////////////////////////////////////////////////////
+
+             var minutesDisplay = document.querySelector('span.minutes');
+             var secondsDisplay = document.querySelector('span.seconds');
+             var nextWeatherDisplay = document.querySelector('span.next-weather');
+
+             var seed = moment.utc('2018-11-10T08:14:00');
+
+             var countdown = function() {
+                 var now = moment();
+                 var duration = moment.duration(now.diff(seed, 'seconds'));
+
+                 var pointInCycle = duration % FULL_CYCLE;
+                 var nextWeather = findNextWeather(pointInCycle);
+                 var timeLeft = calculateTimeLeft(pointInCycle, nextWeather);
+
+                 setText(minutesDisplay, timeLeft, 'minutes');
+                 setText(secondsDisplay, timeLeft, 'seconds');
+                 setText(nextWeatherDisplay, nextWeather);
+             };
+
+             countdown();
+             setInterval(countdown, 1000);
+         })();
+        </script>
+    </body>
+</html>
