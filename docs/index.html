@@ -11,10 +11,9 @@
                 seconds</span> until <b><span class="next-weather">cold</span>
                 weather</b>.
         </p>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"></script>
         <script>
-         (function(){var d=function(b,a){switch(b){case 1:return b+" "+a;default:return b+" "+a+"s"}},c=function(b,a,c){b=b.firstChild;if(c)switch(c){case "minutes":b.nodeValue=d(a.minutes(),"minute");break;case "seconds":b.nodeValue=d(a.seconds(),"second");break;default:b.nodeValue=a}else b.nodeValue=a},f=document.querySelector("span.minutes"),g=document.querySelector("span.seconds"),h=document.querySelector("span.next-weather"),k=moment.utc("2018-11-10T08:14:00"),e=function(){var b=moment(),a=moment.duration(b.diff(k,
-"seconds"))%1600;b=400>a?"cold":"warm";a:switch(b){case "cold":a=moment.duration(400-a,"seconds");break a;case "warm":a=moment.duration(1600-a,"seconds");break a;default:a=null}c(f,a,"minutes");c(g,a,"seconds");c(h,b)};e();setInterval(e,1E3)})();
+            (function(){var d=function(b,a){switch(b){case 1:return b+" "+a;default:return b+" "+a+"s"}},c=function(b,a,c){b=b.firstChild;if(c)switch(c){case "minutes":b.nodeValue=d(Math.floor(a/60),"minute");break;case "seconds":b.nodeValue=d(a%60,"second");break;default:b.nodeValue=a}else b.nodeValue=a},f=document.querySelector("span.minutes"),g=document.querySelector("span.seconds"),h=document.querySelector("span.next-weather"),k=Date.UTC(2018,10,10,8,14,0),e=function(){var b=Date.now(),a=Math.floor((b-k)/
+1E3)%1600;b=400>a?"cold":"warm";a:switch(b){case "cold":a=400-a;break a;case "warm":a=1600-a;break a;default:a=null}c(f,a,"minutes");c(g,a,"seconds");c(h,b)};e();setInterval(e,1E3)})();
         </script>
     </body>
 </html>
